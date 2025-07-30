@@ -12,10 +12,13 @@ import androidx.annotation.NonNull;
 
 import com.getcapacitor.Bridge;
 import com.rajat.pdfviewer.PdfViewerActivity;
-import com.rajat.pdfviewer.PdfRendererView;
+import com.rajat.pdfviewer.util.saveTo;
+import com.rajat.pdfviewer.util.CacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PDFViewer {
     private Bridge bridge = null;
@@ -79,13 +82,19 @@ public class PDFViewer {
     public void openViewer(String url, String title) {
         this.close();
 
+        Map<String, String> headers = new HashMap<>();
+
         // Create an intent with unique extras or identifiers
         Intent activeIntent = PdfViewerActivity.Companion.launchPdfFromUrl(
                 this.bridge.getContext(),
                 url,
                 title,
-                "",
-                false
+                saveTo.DOWNLOADS,
+                false,
+                true,
+                headers,
+                null,
+                CacheStrategy.MAXIMIZE_PERFORMANCE
         );
 
         this.bridge.getActivity().startActivity(activeIntent);
