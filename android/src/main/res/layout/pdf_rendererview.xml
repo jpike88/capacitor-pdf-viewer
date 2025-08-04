@@ -17,7 +17,7 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/pageNo"
+        android:id="@+id/pageNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="18dp"
