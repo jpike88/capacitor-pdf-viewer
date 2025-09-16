@@ -46,7 +46,7 @@ public class PDFViewer {
                     if (activity.getClass().getName().equals(PdfViewerActivity.class.getName())) {
                         activeActivities.add(activity);
 
-                        // immersive + keep screen on (your existing code)
+                        // immersive + keep screen on
                         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                         View decorView = activity.getWindow().getDecorView();
                         decorView.setSystemUiVisibility(
@@ -155,7 +155,7 @@ public class PDFViewer {
                 true,                // enable swipe
                 headers,
                 null,
-                CacheStrategy.DISABLE_CACHE // keeps the fix you found
+                CacheStrategy.MAXIMIZE_PERFORMANCE // keeps the fix found
         );
 
         this.bridge.getActivity().startActivity(activeIntent);
