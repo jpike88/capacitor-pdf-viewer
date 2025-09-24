@@ -46,6 +46,7 @@ public class PdfViewerActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setFinishOnTouchOutside(false);
 
         int top = getIntent().getIntExtra(EXTRA_TOP, 0);
 
@@ -93,8 +94,6 @@ public class PdfViewerActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         );
 
-        progress = findViewById(R.id.progress);
-
         String url = getIntent().getStringExtra(EXTRA_URL);
 
         io.execute(() -> {
@@ -117,7 +116,6 @@ public class PdfViewerActivity extends Activity {
                 runOnUiThread(() -> {
                     viewPager.setAdapter(new PdfPagerAdapter(pdfRenderer));
                     viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
-                    progress.setVisibility(View.GONE);
                 });
             } catch (Exception e) {
                 runOnUiThread(this::finish);
