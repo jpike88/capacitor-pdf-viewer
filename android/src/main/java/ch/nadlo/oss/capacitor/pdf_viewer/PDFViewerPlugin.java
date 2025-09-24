@@ -21,10 +21,9 @@ public class PDFViewerPlugin extends Plugin {
     public void open(PluginCall call) {
         String url = call.getString("url");
         String title = call.getString("title", "");
+        Integer top = call.getInt("top");
 
-        if (url != null && !url.isEmpty()) {
-            implementation.openViewer(url, title);
-        }
+        implementation.openViewer(url, title, top);
 
         call.resolve();
     }

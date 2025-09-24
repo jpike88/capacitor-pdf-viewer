@@ -17,14 +17,9 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 
 import com.getcapacitor.Bridge;
-import com.rajat.pdfviewer.PdfViewerActivity;
-import com.rajat.pdfviewer.util.saveTo;
-import com.rajat.pdfviewer.util.CacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PDFViewer {
     private Bridge bridge = null;
@@ -140,25 +135,15 @@ public class PDFViewer {
 
     /* ───────────────────────────── Public API ───────────────────────────── */
 
-    public void openViewer(String url, String title) {
-        // Close any existing PDF activities (safety)
+    public void openViewer(String url, String title, Integer top) {
         this.close();
 
-        Map<String, String> headers = new HashMap<>();
-
-        Intent activeIntent = PdfViewerActivity.Companion.launchPdfFromUrl(
-                this.bridge.getContext(),
-                url,
-                title,
-                saveTo.DOWNLOADS,
-                false,               // enable download
-                true,                // enable swipe
-                headers,
-                null,
-                CacheStrategy.MAXIMIZE_PERFORMANCE // keeps the fix found
-        );
-
-        this.bridge.getActivity().startActivity(activeIntent);
+        Intent i = new Intent(this.bridge.getContext(), PdfViewerActivity.class);
+        i.putExtra(PdfViewerActivity.EXTRA_URL, url);
+        if (top != null) {
+            i.putExtra(PdfViewerActivity.EXTRA_TOP, top);
+        }
+        this.bridge.getActivity().startActivity(i);
     }
 
     public void close() {
