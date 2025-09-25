@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -82,6 +81,8 @@ public class PdfViewerActivity extends Activity {
             throw new IllegalStateException("ViewPager2 not found in activity_pdf_viewer.xml");
         }
 
+        progress = findViewById(R.id.progress);
+
         // keep screen on + immersive
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         View decor = getWindow().getDecorView();
@@ -116,6 +117,7 @@ public class PdfViewerActivity extends Activity {
                 runOnUiThread(() -> {
                     viewPager.setAdapter(new PdfPagerAdapter(pdfRenderer));
                     viewPager.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
+                    progress.setVisibility(View.GONE);
                 });
             } catch (Exception e) {
                 runOnUiThread(this::finish);
