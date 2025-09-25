@@ -8,30 +8,22 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "PDFViewer")
 public class PDFViewerPlugin extends Plugin {
 
-    private final PDFViewer implementation = new PDFViewer();
+    private PDFViewer implementation;
 
     @Override
     public void load() {
         super.load();
-
+        implementation = new PDFViewer();
         implementation.setBridge(this.getBridge());
     }
 
     @PluginMethod
     public void open(PluginCall call) {
-        String url = call.getString("url");
-        String title = call.getString("title", "");
-        Integer top = call.getInt("top");
-
-        implementation.openViewer(url, title, top);
-
-        call.resolve();
+        implementation.openViewer(call);
     }
 
     @PluginMethod
     public void close(PluginCall call) {
-        implementation.close();
-
-        call.resolve();
+        implementation.closeViewer(call);
     }
 }

@@ -1,13 +1,2 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application>
-        <activity
-            android:name="ch.nadlo.oss.capacitor.pdf_viewer.PdfViewerActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:taskAffinity=""
-            android:theme="@style/PdfOverlayTheme" />
-    </application>
 </manifest>
