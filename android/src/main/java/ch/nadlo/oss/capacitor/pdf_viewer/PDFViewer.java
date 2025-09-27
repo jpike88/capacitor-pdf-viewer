@@ -1,59 +1,94 @@
 package ch.nadlo.oss.capacitor.pdf_viewer;
 
-import android.view.ViewGroup;
+import android.app.Activity;
+import android.util.Log;
+
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
+
 import com.getcapacitor.Bridge;
 import com.getcapacitor.PluginCall;
 
 public class PDFViewer {
 
-    private Bridge bridge;
     private static final String FRAGMENT_TAG = "PdfViewerFragmentTag";
+    private static final String LOG_TAG = "PdfViewer.PDFViewer";
+
+    private Bridge bridge;
 
     public void setBridge(Bridge bridge) {
         this.bridge = bridge;
     }
 
     public void openViewer(PluginCall call) {
-        String url = call.getString("url");
-        if (url == null || url.isEmpty()) {
-            call.reject("URL is required.");
+        if (bridge == null) {
+            Log.e(LOG_TAG, "openViewer: bridge is null");
+            call.reject("Bridge not set");
             return;
         }
-        int topMargin = call.getInt("top", 0);
 
-        // Ensure we're running on the UI thread
-        bridge.getActivity().runOnUiThread(() -> {
-            // Find the root view of the activity
-            ViewGroup rootView = (ViewGroup) bridge.getActivity().getWindow().getDecorView().findViewById(android.R.id.content);
-            if (rootView == null) {
-                call.reject("Could not find root view.");
-                return;
+        final String url = call.getString("url", null);
+        // Accept your existing JS API key "top"; fallback to "marginTop" if present.
+        final int marginTopPx = call.getInt("top", call.getInt("marginTop", 0));
+
+        Log.i(LOG_TAG, "openViewer: url=" + url + ", marginTopPx=" + marginTopPx);
+
+        if (url == null || url.trim().isEmpty()) {
+            Log.e(LOG_TAG, "openViewer: URL missing");
+            call.reject("URL is required");
+            return;
+        }
+
+        final Activity activity = bridge.getActivity();
+        if (activity == null) {
+            Log.e(LOG_TAG, "openViewer: activity is null");
+            call.reject("No active activity");
+            return;
+        }
+
+        activity.runOnUiThread(() -> {
+            FragmentManager fm = ((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager();
+
+            // Remove any previous instance
+            Fragment existing = fm.findFragmentByTag(FRAGMENT_TAG);
+            if (existing != null) {
+                Log.i(LOG_TAG, "openViewer: removing existing fragment");
+                fm.beginTransaction().remove(existing).commitNowAllowingStateLoss();
             }
 
-            // Check if fragment is already added, if so, remove it first
-            Fragment existingFragment = bridge.getActivity().getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
-            if (existingFragment != null) {
-                bridge.getActivity().getSupportFragmentManager().beginTransaction().remove(existingFragment).commit();
-            }
+            Log.i(LOG_TAG, "openViewer: attaching PdfViewerFragment with marginTopPx=" + marginTopPx);
+            PdfViewerFragment fragment = PdfViewerFragment.newInstance(url, marginTopPx);
+            fm.beginTransaction()
+              .add(android.R.id.content, fragment, FRAGMENT_TAG)
+              .commitAllowingStateLoss();
 
-            // Create and add the new fragment
-            PdfViewerFragment fragment = PdfViewerFragment.newInstance(url, topMargin);
-            FragmentTransaction transaction = bridge.getActivity().getSupportFragmentManager().beginTransaction();
-            // Use the root view's ID to add the fragment
-            transaction.add(rootView.getId(), fragment, FRAGMENT_TAG);
-            transaction.addToBackStack(null); // Allows closing with the back button
-            transaction.commit();
             call.resolve();
         });
     }
 
     public void closeViewer(PluginCall call) {
-        bridge.getActivity().runOnUiThread(() -> {
-            Fragment fragment = bridge.getActivity().getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+        if (bridge == null) {
+            Log.e(LOG_TAG, "closeViewer: bridge is null");
+            call.reject("Bridge not set");
+            return;
+        }
+
+        final Activity activity = bridge.getActivity();
+        if (activity == null) {
+            Log.e(LOG_TAG, "closeViewer: activity is null");
+            call.reject("No active activity");
+            return;
+        }
+
+        activity.runOnUiThread(() -> {
+            FragmentManager fm = ((androidx.fragment.app.FragmentActivity) activity).getSupportFragmentManager();
+            Fragment fragment = fm.findFragmentByTag(FRAGMENT_TAG);
             if (fragment != null) {
-                bridge.getActivity().getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                Log.i(LOG_TAG, "closeViewer: removing fragment");
+                fm.beginTransaction().remove(fragment).commitAllowingStateLoss();
+                fm.executePendingTransactions();
+            } else {
+                Log.i(LOG_TAG, "closeViewer: no fragment to remove");
             }
             call.resolve();
         });
