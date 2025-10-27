@@ -1,5 +1,5 @@
 {
-  "name": "@nadlowebagentur/capacitor-pdf-viewer",
+  "name": "@jpike88/capacitor-pdf-viewer",
   "version": "0.1.10",
   "description": "Native PDF viewer",
   "main": "dist/plugin.cjs.js",
@@ -11,16 +11,16 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "NadlowebagenturCapacitorPdfViewer.podspec"
+    "Jpike88CapacitorPdfViewer.podspec"
   ],
   "author": "codobred",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nadlowebagentur/capacitor-pdf-viewer.git"
+    "url": "git+https://github.com/jpike88/capacitor-pdf-viewer.git"
   },
   "bugs": {
-    "url": "https://github.com/nadlowebagentur/capacitor-pdf-viewer/issues"
+    "url": "https://github.com/jpike88/capacitor-pdf-viewer/issues"
   },
   "keywords": [
     "capacitor",

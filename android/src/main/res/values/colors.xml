@@ -1,7 +1,0 @@
-<resources>
-    <color name="pdf_viewer_primary">#000000</color>
-    <color name="pdf_viewer_on_primary">#FFFFFF</color>
-    <color name="pdf_viewer_surface">#FFFFFF</color>
-    <color name="colorPrimary">#000000</color>
-    <color name="colorSecondary">#000000</color>
-</resources>
