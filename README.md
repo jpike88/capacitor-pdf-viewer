@@ -1,11 +1,11 @@
-# @jpike88/capacitor-pdf-viewer
+# @nadlowebagentur/capacitor-pdf-viewer
 
 Native PDF viewer
 
 ## Install
 
 ```bash
-npm install @jpike88/capacitor-pdf-viewer
+npm install @nadlowebagentur/capacitor-pdf-viewer
 npx cap sync
 ```
 
