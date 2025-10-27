@@ -1,5 +1,5 @@
 {
-  "name": "@jpike88/capacitor-pdf-viewer",
+  "name": "jpike88-capacitor-pdf-viewer",
   "version": "0.1.10",
   "description": "Native PDF viewer",
   "main": "dist/plugin.cjs.js",
