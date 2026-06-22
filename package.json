@@ -1,6 +1,6 @@
 {
   "name": "jpike88-capacitor-pdf-viewer",
-  "version": "0.1.10",
+  "version": "0.1.20",
   "description": "Native PDF viewer",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
